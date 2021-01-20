@@ -1,0 +1,68 @@
+name: globis-insights
+recipe: wordpress
+config:
+  env: dev
+  php: "7.4"
+  composer_version: "2.0.8"
+  webroot: .
+  via: apache:2.4
+  database: mariadb
+  xdebug: true
+  # SOLR index
+  index: false
+  # VARNISH edge
+  edge: false
+  # REDIS cache
+  cache: false
+  config:
+    #   database: SEE BELOW
+    php: configs/php.ini
+    server: configs/httpd.conf
+  #   vhosts: SEE BELOW
+
+services:
+  appserver:
+    overrides:
+      image: ceskhiemle/landophp:7.4-apache-2
+    build_as_root:
+      - mkdir /files
+      - chmod 0777 /files
+    post-start:
+      - bash ./scripts/post-start.sh
+    composer:
+      phpunit/phpunit: "*"
+      dealerdirect/phpcodesniffer-composer-installer: "*"
+      phpcompatibility/phpcompatibility-wp: "*"
+      wp-coding-standards/wpcs: "*"
+      automattic/vipwpcs: "*"
+  pma:
+    type: phpmyadmin
+    hosts:
+      - database
+
+events:
+  post-rebuild:
+    - bash ./scripts/post-build.sh
+
+tooling:
+  yarn:
+    service: appserver
+  node:
+    service: appserver
+  npm:
+    service: appserver
+  composer:
+    service: appserver
+    description: Run composer commands
+    cmd:
+      - php -dmemory_limit=-1 /usr/local/bin/composer
+
+proxy:
+  # Appserver_nginx or appserver for apache
+  appserver:
+    - wp.globis-insight.lndo.site
+  pma:
+    - pma.globis-insight.lndo.site
+
+env_file:
+  - .env
