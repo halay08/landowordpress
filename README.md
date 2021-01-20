@@ -1,6 +1,6 @@
 # Lando Wordpress - Apache 2
 
-PHP 7.x - Apache2 for Lando
+Stack PHP 7.x - Wordpress - Apache2 using Lando
 
 ## Prerequisites
 
