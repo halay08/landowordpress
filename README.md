@@ -1,4 +1,5 @@
-# landophp
+# Lando Wordpress - Apache 2
+
 PHP 7.x - Apache2 for Lando
 
 ## Prerequisites
@@ -9,6 +10,8 @@ PHP 7.x - Apache2 for Lando
 ## Getting Started
 
 ```sh
+$ cp .env.example .env
+$ cp wp-config-local-sample.php wp-config-local.php
 $ lando rebuild -y
 ```
 
