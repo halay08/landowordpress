@@ -11,7 +11,7 @@ fi
 composer update --prefer-source
 
 printf "\n***************************************************************************\n"
-printf "                   Install Globis WordPress Latest\n"
+printf "                   Install WordPress Latest\n"
 printf "***************************************************************************\n\n"
 
 wp --allow-root core download --force
